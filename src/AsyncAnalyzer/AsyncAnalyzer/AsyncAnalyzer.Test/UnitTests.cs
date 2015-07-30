@@ -4,7 +4,6 @@ using Microsoft.CodeAnalysis.Diagnostics;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using TestHelper;
-using AsyncAnalyzer;
 
 namespace AsyncAnalyzer.Test
 {
@@ -65,7 +64,7 @@ namespace AsyncAnalyzer.Test
                 Message = String.Format("Async method name '{0}' does not end with Async", "Test"),
                 Severity = DiagnosticSeverity.Warning,
                 Locations =
-                    new[] 
+                    new[]
                     {
                         new DiagnosticResultLocation("Test0.cs", 13, 31),
                     }

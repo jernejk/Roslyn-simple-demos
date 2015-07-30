@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Collections.Immutable;
+﻿using System.Collections.Immutable;
 using System.Composition;
 using System.Linq;
 using System.Threading;
@@ -8,16 +6,16 @@ using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CodeFixes;
 using Microsoft.CodeAnalysis.CodeActions;
-using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Rename;
-using Microsoft.CodeAnalysis.Text;
 
 namespace AsyncAnalyzer
 {
     [ExportCodeFixProvider(LanguageNames.CSharp, Name = nameof(AsyncAnalyzerCodeFixProvider)), Shared]
     public class AsyncAnalyzerCodeFixProvider : CodeFixProvider
     {
+        private const string title = "Async fixer";
+
         public sealed override ImmutableArray<string> FixableDiagnosticIds
         {
             get { return ImmutableArray.Create(AsyncAnalyzerAnalyzer.DiagnosticId); }
@@ -49,7 +47,7 @@ namespace AsyncAnalyzer
 
             // Get the symbol representing the type to be renamed.
             var semanticModel = await document.GetSemanticModelAsync(cancellationToken);
-            
+
             var list = semanticModel.LookupSymbols(node.Identifier.Span.Start).Where(l => l is IMethodSymbol).ToList();
             var methodSymbol = list.FirstOrDefault(l => l is IMethodSymbol && l.Locations[0].SourceSpan.Start == node.Identifier.SpanStart);
 
