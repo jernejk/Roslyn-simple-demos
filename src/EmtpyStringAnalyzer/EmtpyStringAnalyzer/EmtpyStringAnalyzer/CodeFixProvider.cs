@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Collections.Immutable;
+﻿using System.Collections.Immutable;
 using System.Composition;
 using System.Linq;
 using System.Threading;
@@ -9,10 +7,6 @@ using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CodeFixes;
 using Microsoft.CodeAnalysis.CodeActions;
 using Microsoft.CodeAnalysis.CSharp;
-using Microsoft.CodeAnalysis.CSharp.Syntax;
-using Microsoft.CodeAnalysis.Rename;
-using Microsoft.CodeAnalysis.Text;
-
 using SF = Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
 
 namespace EmtpyStringAnalyzer
@@ -20,6 +14,8 @@ namespace EmtpyStringAnalyzer
     [ExportCodeFixProvider(LanguageNames.CSharp, Name = nameof(EmtpyStringAnalyzerCodeFixProvider)), Shared]
     public class EmtpyStringAnalyzerCodeFixProvider : CodeFixProvider
     {
+        private const string title = "To string.Empty";
+
         public sealed override ImmutableArray<string> FixableDiagnosticIds
         {
             get { return ImmutableArray.Create(EmtpyStringAnalyzerAnalyzer.DiagnosticId); }

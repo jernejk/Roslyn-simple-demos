@@ -1,11 +1,13 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 14
-VisualStudioVersion = 14.0.22823.1
+VisualStudioVersion = 14.0.23107.0
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EmtpyStringAnalyzer", "EmtpyStringAnalyzer\EmtpyStringAnalyzer\EmtpyStringAnalyzer.csproj", "{559A713F-8688-4488-B677-5C9901929A55}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EmtpyStringAnalyzer", "EmtpyStringAnalyzer\EmtpyStringAnalyzer\EmtpyStringAnalyzer.csproj", "{8420744D-E097-47FD-B135-DD3BB4C03021}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EmtpyStringAnalyzer.Test", "EmtpyStringAnalyzer\EmtpyStringAnalyzer.Test\EmtpyStringAnalyzer.Test.csproj", "{AA31A546-A873-47E4-A935-BB5DE60E5EF4}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EmtpyStringAnalyzer.Test", "EmtpyStringAnalyzer\EmtpyStringAnalyzer.Test\EmtpyStringAnalyzer.Test.csproj", "{6A436305-EEA8-4730-B454-1A9E60DF7BC4}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EmtpyStringAnalyzer.Vsix", "EmtpyStringAnalyzer\EmtpyStringAnalyzer.Vsix\EmtpyStringAnalyzer.Vsix.csproj", "{6131ED7C-9477-4850-9CDC-6AD0E6D9AE01}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -13,14 +15,18 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{559A713F-8688-4488-B677-5C9901929A55}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{559A713F-8688-4488-B677-5C9901929A55}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{559A713F-8688-4488-B677-5C9901929A55}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{559A713F-8688-4488-B677-5C9901929A55}.Release|Any CPU.Build.0 = Release|Any CPU
-		{AA31A546-A873-47E4-A935-BB5DE60E5EF4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{AA31A546-A873-47E4-A935-BB5DE60E5EF4}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{AA31A546-A873-47E4-A935-BB5DE60E5EF4}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{AA31A546-A873-47E4-A935-BB5DE60E5EF4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8420744D-E097-47FD-B135-DD3BB4C03021}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8420744D-E097-47FD-B135-DD3BB4C03021}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8420744D-E097-47FD-B135-DD3BB4C03021}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8420744D-E097-47FD-B135-DD3BB4C03021}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6A436305-EEA8-4730-B454-1A9E60DF7BC4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6A436305-EEA8-4730-B454-1A9E60DF7BC4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6A436305-EEA8-4730-B454-1A9E60DF7BC4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6A436305-EEA8-4730-B454-1A9E60DF7BC4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6131ED7C-9477-4850-9CDC-6AD0E6D9AE01}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6131ED7C-9477-4850-9CDC-6AD0E6D9AE01}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6131ED7C-9477-4850-9CDC-6AD0E6D9AE01}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6131ED7C-9477-4850-9CDC-6AD0E6D9AE01}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

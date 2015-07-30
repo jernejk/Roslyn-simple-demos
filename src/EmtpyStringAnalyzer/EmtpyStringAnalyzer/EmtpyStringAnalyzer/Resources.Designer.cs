@@ -62,7 +62,7 @@ namespace EmtpyStringAnalyzer {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Type names should be all uppercase..
+        ///   Looks up a localized string similar to This is not correct empty string.
         /// </summary>
         internal static string AnalyzerDescription {
             get {
@@ -71,7 +71,7 @@ namespace EmtpyStringAnalyzer {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to This is not correct empty string!.
+        ///   Looks up a localized string similar to This is not correct empty string.
         /// </summary>
         internal static string AnalyzerMessageFormat {
             get {
@@ -80,7 +80,7 @@ namespace EmtpyStringAnalyzer {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Type name contains lowercase letters.
+        ///   Looks up a localized string similar to String.Empty analyzer demo.
         /// </summary>
         internal static string AnalyzerTitle {
             get {
