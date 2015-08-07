@@ -1,8 +1,5 @@
 # Roslyn-simple-demos
+
+[![Build status](https://ci.appveyor.com/api/projects/status/eo2y51ryc83jju8c/branch/master?svg=true)](https://ci.appveyor.com/project/jernejk/roslyn-simple-demos-2vp8l/branch/master)
+
 Simple demos for Roslyn
-
-AsyncAnalyzer demo:
-[![Build status](https://ci.appveyor.com/api/projects/status/ih09wh32g53a08v2/branch/master?svg=true)](https://ci.appveyor.com/project/jernejk/roslyn-simple-demos/branch/master)
-
-EmtpyStringAnalyzer demo:
-[![Build status](https://ci.appveyor.com/api/projects/status/88rufkaabnadwjo6/branch/master?svg=true)](https://ci.appveyor.com/project/jernejk/roslyn-simple-demos-n1swx/branch/master)
