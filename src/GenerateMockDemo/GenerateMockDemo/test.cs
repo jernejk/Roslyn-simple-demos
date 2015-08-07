@@ -10,14 +10,21 @@ namespace GenerateMockDemo
     {
         public bool SomeProperties { get; set; }
 
+        public bool SomeProperties2 { get; }
+
         public void SomeMethods()
         {
-            throw new NotImplementedException();
+            SomeMethod3();
         }
 
         public void SomeMethods2()
         {
-            throw new NotImplementedException();
+            SomeMethods();
+        }
+
+        public void SomeMethod3()
+        {
+            SomeProperties = true;
         }
     }
 }

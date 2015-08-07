@@ -30,7 +30,7 @@ namespace GenerateMockDemo
                 SyntaxNode root = MockClass(tree, semanticModel, type.Parent as ClassDeclarationSyntax);
 
                 Console.WriteLine("New source: ");
-                Console.WriteLine(root.SyntaxTree.GetText());
+                Console.WriteLine(root.NormalizeWhitespace().SyntaxTree.GetText());
             }
         }
 
@@ -39,33 +39,45 @@ namespace GenerateMockDemo
             SyntaxNode root = tree.GetRoot();
             Console.WriteLine("Class name: " + classNode.Identifier.Text);
 
-            foreach (var stuff in classNode.Members)
+            SyntaxList<MemberDeclarationSyntax> members = new SyntaxList<MemberDeclarationSyntax>();
+
+            foreach (var member in classNode.Members)
             {
-                if (stuff is MethodDeclarationSyntax)
+                if (member is MethodDeclarationSyntax)
                 {
-                    Console.WriteLine("\tMethod name: " + ((MethodDeclarationSyntax)stuff).Identifier.Text);
+                    var method = (MethodDeclarationSyntax)member;
+                    Console.WriteLine("\tMethod name: " + method.Identifier.Text);
 
                     var exceptionBlockNode = GetThrowNotImplementedBlockSyntax();
-                    root = root.ReplaceNode(((MethodDeclarationSyntax)stuff).Body, exceptionBlockNode);
+                    members = members.Add(SF.MethodDeclaration(method.ReturnType, method.Identifier.Text).AddBodyStatements(exceptionBlockNode));
                 }
-                else if (stuff is PropertyDeclarationSyntax)
+                else if (member is PropertyDeclarationSyntax)
                 {
-                    Console.WriteLine("\tProperty name: " + ((PropertyDeclarationSyntax)stuff).Identifier.Text);
+                    var property = (PropertyDeclarationSyntax)member;
+                    Console.WriteLine("\tProperty name: " + property.Identifier.Text);
+
+                    var propertyRoot = SF.PropertyDeclaration(property.Type, property.Identifier.Text);
+                    members = members.Add(member);
+                }
+                else
+                {
+                    members = members.Add(member);
                 }
             }
+            
+            SyntaxToken classIdentifier = SF.IdentifierName(classNode.Identifier.Text + "Mock").GetFirstToken();
+            var classDeclaration = SF.ClassDeclaration(classNode.AttributeLists, classNode.Modifiers, classIdentifier, classNode.TypeParameterList, classNode.BaseList, classNode.ConstraintClauses, members);
 
-            return root;
+            return SF.NamespaceDeclaration(SF.IdentifierName("TestNamespace")).AddUsings(SF.UsingDirective(SF.IdentifierName("System"))).AddMembers(classDeclaration);
         }
 
-        public static BlockSyntax GetThrowNotImplementedBlockSyntax()
+        private static StatementSyntax GetThrowNotImplementedBlockSyntax()
         {
             // Block -> { token -> ThrowStatement -> { token -> ObjectCreationExpression -> NewKeyword, IdentifierName -> { IdentifierToken, ArgumentList -> { ( token, ) token } }, ; token, } token, } token
             //var notImplemented = SF.ObjectCreationExpression(SF.IdentifierName("NotImplementedException"));
             //var throwStatement = SF.ThrowStatement(notImplemented);
 
-            var throwStatement = SF.ParseStatement("new NotImplementedException();");
-
-            return SF.Block(throwStatement);
+            return SF.ParseStatement("new NotImplementedException();");
         }
     }
 }
