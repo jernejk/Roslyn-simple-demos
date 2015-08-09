@@ -17,14 +17,21 @@ namespace GenerateMockDemo
             SomeMethod3();
         }
 
-        public void SomeMethods2()
+        private async void SomeMethods2()
         {
             SomeMethods();
         }
 
-        public void SomeMethod3()
+        public string SomeMethod3()
         {
             SomeProperties = true;
+
+            return "Test";
+        }
+
+        public void A(int a, int b, double c)
+        {
+
         }
     }
 }

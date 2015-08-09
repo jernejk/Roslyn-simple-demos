@@ -1,14 +1,10 @@
 using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Symbols;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
-using Microsoft.CodeAnalysis.Text;
 using System.IO;
-using System.Diagnostics;
 using SF = Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
 
 namespace GenerateMockDemo
@@ -48,8 +44,14 @@ namespace GenerateMockDemo
                     var method = (MethodDeclarationSyntax)member;
                     Console.WriteLine("\tMethod name: " + method.Identifier.Text);
 
+                    members = members.Add(CreateMethodDelegate(method, semanticModel));
+
                     var exceptionBlockNode = GetThrowNotImplementedBlockSyntax();
-                    members = members.Add(SF.MethodDeclaration(method.ReturnType, method.Identifier.Text).AddBodyStatements(exceptionBlockNode));
+                    members = members.Add(
+                        SF.MethodDeclaration(method.ReturnType, method.Identifier.Text)
+                                            .AddModifiers(method.Modifiers.ToArray())
+                                            .AddParameterListParameters(method.ParameterList.Parameters.ToArray())
+                                            .AddBodyStatements(exceptionBlockNode));
                 }
                 else if (member is PropertyDeclarationSyntax)
                 {
@@ -73,11 +75,80 @@ namespace GenerateMockDemo
 
         private static StatementSyntax GetThrowNotImplementedBlockSyntax()
         {
-            // Block -> { token -> ThrowStatement -> { token -> ObjectCreationExpression -> NewKeyword, IdentifierName -> { IdentifierToken, ArgumentList -> { ( token, ) token } }, ; token, } token, } token
-            //var notImplemented = SF.ObjectCreationExpression(SF.IdentifierName("NotImplementedException"));
-            //var throwStatement = SF.ThrowStatement(notImplemented);
-
             return SF.ParseStatement("new NotImplementedException();");
+        }
+
+        private static MemberDeclarationSyntax CreateMethodDelegate(MethodDeclarationSyntax method, SemanticModel model)
+        {
+            IMethodSymbol methodSemanticData = model.GetDeclaredSymbol(method) as IMethodSymbol;
+
+            string returnType;
+            if (methodSemanticData.ReturnsVoid && !methodSemanticData.IsAsync)
+            {
+                returnType = "void";
+            }
+            else if (methodSemanticData.ReturnsVoid)
+            {
+                returnType = "Task";
+            }
+            else
+            {
+                var type = method.ReturnType;
+                if (type is PredefinedTypeSyntax)
+                {
+                    var predefinedType = type as PredefinedTypeSyntax;
+                    returnType = "predefinedType.Keyword.Text}>";
+                }
+                else
+                {
+                    var identifierType = type as IdentifierNameSyntax;
+                    returnType = identifierType.Identifier.Text;
+                }
+            }
+
+            IdentifierNameSyntax delegateType;
+            if (!methodSemanticData.Parameters.Any())
+            {
+                if (returnType == "void")
+                {
+                    delegateType = SF.IdentifierName("Action");
+                }
+                else
+                {
+                    delegateType = SF.IdentifierName($"Func<{returnType}>");
+                }
+            }
+            else
+            {
+                string arguments = string.Empty;
+                foreach (var parameter in methodSemanticData.Parameters)
+                {
+                    if (!string.IsNullOrEmpty(arguments))
+                    {
+                        arguments += ", ";
+                    }
+
+                    arguments += parameter.Type.Name;
+                }
+
+                if (returnType == "void")
+                {
+                    delegateType = SF.IdentifierName($"Action<{arguments}>");
+                }
+                else
+                {
+                    delegateType = SF.IdentifierName($"Func<{returnType}, {arguments}>");
+                }
+            }
+
+            var name = SF.Identifier("Mock" + method.Identifier.Text);
+            var variable = SF.VariableDeclarator(name);
+            var variableDeclaration = SF.VariableDeclaration(delegateType).AddVariables(variable);
+
+            EventFieldDeclarationSyntax eventSyntax = SF.EventFieldDeclaration(variableDeclaration);
+            eventSyntax = eventSyntax.AddModifiers(SF.Token(SyntaxKind.PublicKeyword));
+
+            return eventSyntax;
         }
     }
 }
