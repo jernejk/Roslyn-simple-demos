@@ -61,8 +61,8 @@ namespace GenerateMockDemo
                     var property = (PropertyDeclarationSyntax)member;
                     Console.WriteLine("\tProperty name: " + property.Identifier.Text);
 
-                    var propertyRoot = SF.PropertyDeclaration(property.Type, property.Identifier.Text);
-                    members = members.Add(member);
+                    IPropertySymbol propertySemanticData = semanticModel.GetDeclaredSymbol(property) as IPropertySymbol;
+                    members = members.Add(GenerateProperty(property, propertySemanticData, usedNames));
                 }
                 else
                 {
@@ -186,6 +186,29 @@ namespace GenerateMockDemo
             eventSyntax = eventSyntax.AddModifiers(SF.Token(SyntaxKind.PublicKeyword));
 
             return eventSyntax;
+        }
+
+        public static MemberDeclarationSyntax GenerateProperty(PropertyDeclarationSyntax property, IPropertySymbol propertySemanticData, List<string> usedNames)
+        {
+            PropertyDeclarationSyntax declaration = SF.PropertyDeclaration(property.Type, property.Identifier.Text)
+                                    .AddModifiers(property.Modifiers.ToArray());
+
+            var block = SF.Block(GetThrowNotImplementedBlockSyntax());
+
+            if (property.AccessorList.Accessors.Count > 0)
+            {
+                if (property.AccessorList.Accessors.Any(p => p.Keyword.Text == "get"))
+                {
+                    declaration = declaration.AddAccessorListAccessors(SF.AccessorDeclaration(SyntaxKind.GetAccessorDeclaration, block));
+                }
+
+                if (property.AccessorList.Accessors.Any(p => p.Keyword.Text == "set"))
+                {
+                    declaration = declaration.AddAccessorListAccessors(SF.AccessorDeclaration(SyntaxKind.SetAccessorDeclaration, block));
+                }
+            }
+
+            return declaration;
         }
 
         private static string GetName(string memberName, List<string> usedNames)
